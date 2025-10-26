@@ -5,6 +5,7 @@
 """
 Knowledge graph builder for M365 Copilot data using OpenCog.
 """
+import re
 from typing import Any, Dict, List, Optional, Set
 from hyperon import MeTTa, GroundingSpace
 
@@ -12,7 +13,7 @@ from hyperon import MeTTa, GroundingSpace
 class KnowledgeGraphBuilder:
     """
     Builds rich knowledge graphs from M365 Copilot API data.
-    
+
     This builder extracts entities, relationships, and semantic connections
     from M365 data to create a comprehensive knowledge graph using OpenCog.
     """
@@ -39,7 +40,7 @@ class KnowledgeGraphBuilder:
             GroundingSpace: The constructed knowledge graph
         """
         space = GroundingSpace()
-        
+
         if not retrieval_response:
             return space
 
@@ -83,7 +84,7 @@ class KnowledgeGraphBuilder:
         Returns:
             Optional[str]: Extracted entity name or None
         """
-        import re
+
         # Extract the last meaningful part of the URL
         match = re.search(r'/([^/]+)/?$', url)
         if match:
@@ -102,12 +103,12 @@ class KnowledgeGraphBuilder:
             Set[str]: Extracted entities
         """
         entities = set()
-        
+
         # Simple capitalized word extraction as entities
-        import re
+
         # Find capitalized words (simple entity extraction)
         words = re.findall(r'\b[A-Z][a-z]+(?:\s+[A-Z][a-z]+)*\b', text)
-        
+
         for word in words:
             entity_name = word.replace(' ', '_').lower()
             entities.add(f"entity_{entity_name}")
@@ -147,7 +148,7 @@ class KnowledgeGraphBuilder:
     def infer_relationships(self) -> None:
         """
         Infer implicit relationships based on existing entities and relationships.
-        
+
         This method uses simple heuristics to infer potential connections.
         """
         # Example: Documents with similar names might be related
@@ -171,15 +172,15 @@ class KnowledgeGraphBuilder:
         # Simple similarity check based on common prefixes
         if not entity1 or not entity2:
             return False
-        
+
         # Extract base names
         base1 = entity1.replace('doc_', '').replace('entity_', '')
         base2 = entity2.replace('doc_', '').replace('entity_', '')
-        
+
         # Check for common prefix (at least 4 characters)
         if len(base1) >= 4 and len(base2) >= 4:
             return base1[:4] == base2[:4]
-        
+
         return False
 
     def get_entity_count(self) -> int:

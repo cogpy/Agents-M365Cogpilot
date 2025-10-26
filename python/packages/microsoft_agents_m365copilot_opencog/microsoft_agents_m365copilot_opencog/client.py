@@ -12,13 +12,13 @@ from azure.core.credentials_async import AsyncTokenCredential
 from hyperon import GroundingSpace
 
 try:
-    from microsoft_agents_m365copilot_beta import AgentsM365CopilotBetaServiceClient
-    from microsoft_agents_m365copilot_beta.generated.copilot.retrieval.retrieval_post_request_body import (
-        RetrievalPostRequestBody,
+    from microsoft_agents_m365copilot_beta import (
+        AgentsM365CopilotBetaServiceClient,
     )
-    from microsoft_agents_m365copilot_beta.generated.models.retrieval_data_source import (
-        RetrievalDataSource,
-    )
+    from microsoft_agents_m365copilot_beta.generated.copilot.retrieval.\
+        retrieval_post_request_body import RetrievalPostRequestBody
+    from microsoft_agents_m365copilot_beta.generated.models.\
+        retrieval_data_source import RetrievalDataSource
 except ImportError as e:
     raise ImportError(
         "microsoft-agents-m365copilot-beta is required. "
@@ -32,7 +32,7 @@ from .knowledge_graph_builder import KnowledgeGraphBuilder
 class OpenCogCopilotClient:
     """
     Microsoft 365 Copilot API client with OpenCog integration.
-    
+
     This client wraps the standard M365 Copilot client and provides additional
     methods to work with OpenCog knowledge graphs and reasoning.
     """
@@ -84,7 +84,7 @@ class OpenCogCopilotClient:
         """
         # Create retrieval request
         retrieval_body = RetrievalPostRequestBody()
-        
+
         # Handle data source
         if isinstance(data_source, str):
             # Convert string to enum
@@ -120,7 +120,7 @@ class OpenCogCopilotClient:
         """
         # Create retrieval request
         retrieval_body = RetrievalPostRequestBody()
-        
+
         if isinstance(data_source, str):
             data_source = getattr(RetrievalDataSource, data_source, RetrievalDataSource.SharePoint)
         retrieval_body.data_source = data_source
@@ -168,7 +168,11 @@ class OpenCogCopilotClient:
         """
         return self.adapter.get_all_atoms()
 
-    async def retrieve(self, query: str, data_source: Union[str, RetrievalDataSource] = RetrievalDataSource.SharePoint) -> Any:
+    async def retrieve(
+        self,
+        query: str,
+        data_source: Union[str, RetrievalDataSource] = RetrievalDataSource.SharePoint
+    ) -> Any:
         """
         Standard retrieval without OpenCog conversion (for compatibility).
 
@@ -180,7 +184,7 @@ class OpenCogCopilotClient:
             Retrieval response from M365 Copilot API
         """
         retrieval_body = RetrievalPostRequestBody()
-        
+
         if isinstance(data_source, str):
             data_source = getattr(RetrievalDataSource, data_source, RetrievalDataSource.SharePoint)
         retrieval_body.data_source = data_source

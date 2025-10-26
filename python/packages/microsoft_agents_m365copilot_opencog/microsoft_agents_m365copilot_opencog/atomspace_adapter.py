@@ -5,14 +5,15 @@
 """
 AtomSpace adapter for converting M365 Copilot data to OpenCog knowledge graphs.
 """
-from typing import Any, Dict, List, Optional
+import re
+from typing import Any, List
 from hyperon import MeTTa, GroundingSpace
 
 
 class AtomSpaceAdapter:
     """
     Adapter to convert Microsoft 365 Copilot API responses into OpenCog AtomSpace format.
-    
+
     This adapter creates a knowledge graph representation using OpenCog Hyperon's MeTTa
     and GroundingSpace, enabling reasoning and pattern matching over M365 data.
     """
@@ -51,7 +52,7 @@ class AtomSpaceAdapter:
         """
         # Create document concept node
         doc_id = self._sanitize_identifier(hit.web_url if hasattr(hit, 'web_url') else 'unknown')
-        
+
         # Add document node
         doc_atom = f'(: Document_{doc_id} Document)'
         self._add_atom(doc_atom)
@@ -68,14 +69,17 @@ class AtomSpaceAdapter:
                     content_id = f"{doc_id}_extract_{idx}"
                     content_atom = f'(: Content_{content_id} Content)'
                     self._add_atom(content_atom)
-                    
+
                     # Link content to document
                     link_atom = f'(has-extract Document_{doc_id} Content_{content_id})'
                     self._add_atom(link_atom)
-                    
+
                     # Store text content (truncated for atom representation)
-                    text_preview = extract.text[:100] if len(extract.text) > 100 else extract.text
-                    text_atom = f'(has-text Content_{content_id} "{self._escape_string(text_preview)}")'
+                    text_preview = (
+                        extract.text[:100] if len(extract.text) > 100 else extract.text
+                    )
+                    escaped_text = self._escape_string(text_preview)
+                    text_atom = f'(has-text Content_{content_id} "{escaped_text}")'
                     self._add_atom(text_atom)
 
     def convert_interaction_history(self, interactions: List[Any]) -> GroundingSpace:
@@ -102,7 +106,7 @@ class AtomSpaceAdapter:
         interaction_id = self._sanitize_identifier(
             str(getattr(interaction, 'id', 'unknown'))
         )
-        
+
         # Create interaction node
         interaction_atom = f'(: Interaction_{interaction_id} Interaction)'
         self._add_atom(interaction_atom)
@@ -137,7 +141,6 @@ class AtomSpaceAdapter:
             str: Sanitized identifier safe for use in atoms
         """
         # Replace non-alphanumeric characters with underscores
-        import re
         sanitized = re.sub(r'[^a-zA-Z0-9_]', '_', str(identifier))
         # Ensure it doesn't start with a number
         if sanitized and sanitized[0].isdigit():
