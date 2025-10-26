@@ -15,10 +15,16 @@ try:
     from microsoft_agents_m365copilot_beta import (
         AgentsM365CopilotBetaServiceClient,
     )
-    from microsoft_agents_m365copilot_beta.generated.copilot.retrieval.\
-        retrieval_post_request_body import RetrievalPostRequestBody
-    from microsoft_agents_m365copilot_beta.generated.models.\
-        retrieval_data_source import RetrievalDataSource
+    from microsoft_agents_m365copilot_beta.generated.copilot.retrieval import (
+        retrieval_post_request_body,
+    )
+    from microsoft_agents_m365copilot_beta.generated.models import (
+        retrieval_data_source,
+    )
+    RetrievalPostRequestBody = (
+        retrieval_post_request_body.RetrievalPostRequestBody
+    )
+    RetrievalDataSource = retrieval_data_source.RetrievalDataSource
 except ImportError as e:
     raise ImportError(
         "microsoft-agents-m365copilot-beta is required. "
