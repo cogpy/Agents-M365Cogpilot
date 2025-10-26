@@ -12,11 +12,18 @@ The Microsoft 365 Copilot APIs client libraries are available in the following p
 
 - [microsoft-agents-m365copilot-beta](https://github.com/microsoft/Agents-M365Copilot/tree/main/python/packages/microsoft_agents_m365copilot_beta): Contains the models and request builders for accessing the beta endpoint. microsoft-agents-m365copilot-beta has a dependency on microsoft-agents-m365copilot-core.
 - [microsoft-agents-m365copilot-core](https://github.com/microsoft/Agents-M365Copilot/tree/main/python/packages/microsoft_agents_m365copilot_core): The core library for making calls to the Copilot APIs.
+- [microsoft-agents-m365copilot-opencog](https://github.com/microsoft/Agents-M365Copilot/tree/main/python/packages/microsoft_agents_m365copilot_opencog): OpenCog integration for building knowledge graphs and applying AGI reasoning to M365 Copilot data.
 
 To install the client libraries via PyPi:
 
 ```py
 pip install microsoft-agents-m365copilot-beta
+```
+
+For OpenCog integration:
+
+```py
+pip install microsoft-agents-m365copilot-opencog
 ```
 
 ## Create a Copilot APIs client and make an API call
@@ -118,6 +125,58 @@ The client ID is the app registration ID that is generated when you [register yo
     ```
 
 3. If successful, you should get a list of `retrievalHits` collection.
+
+## OpenCog Integration
+
+The OpenCog integration package provides AI reasoning and knowledge graph capabilities for M365 Copilot data. OpenCog is an open-source framework for Artificial General Intelligence (AGI) that uses knowledge graphs and reasoning engines.
+
+### Installation
+
+```bash
+pip install microsoft-agents-m365copilot-opencog
+```
+
+### Features
+
+- **Knowledge Graph Builder**: Automatically converts M365 Copilot retrieval results into OpenCog AtomSpace knowledge graphs
+- **Entity Extraction**: Extracts entities and relationships from documents and text
+- **Relationship Inference**: Infers implicit connections between entities
+- **Pattern Matching**: Query knowledge graphs using MeTTa pattern matching
+- **AGI Reasoning**: Apply OpenCog's reasoning capabilities to organizational knowledge
+
+### Quick Start
+
+```python
+import asyncio
+from azure.identity import DeviceCodeCredential
+from microsoft_agents_m365copilot_opencog import OpenCogCopilotClient
+
+credentials = DeviceCodeCredential(
+    client_id="YOUR_CLIENT_ID",
+    tenant_id="YOUR_TENANT_ID"
+)
+
+client = OpenCogCopilotClient(credentials=credentials)
+
+async def main():
+    # Retrieve data and convert to knowledge graph
+    atom_space = await client.retrieve_to_atomspace(
+        query="What are the latest updates?",
+        data_source="SharePoint"
+    )
+    
+    # Query the knowledge graph
+    results = client.query_knowledge_graph("!(match &self (: $x Document) $x)")
+    
+    # Get statistics
+    stats = client.get_graph_statistics()
+    print(f"Entities: {stats['entity_count']}")
+    print(f"Relationships: {stats['relationship_count']}")
+
+asyncio.run(main())
+```
+
+For more details, see the [OpenCog integration documentation](https://github.com/microsoft/Agents-M365Copilot/tree/main/python/packages/microsoft_agents_m365copilot_opencog#readme).
 
 ## Issues
 
