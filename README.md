@@ -6,6 +6,20 @@ The service libraries offer models and request builders that provide a rich, typ
 
 The core libraries offer advanced features to facilitate interactions with the Copilot APIs. These features include embedded support for retry handling, secure redirects, transparent authentication, and payload compression. These capabilities help you enhance the quality of your AI solution's communications with the Copilot APIs without adding complexity. Additionally, the core libraries simplify routine tasks such as paging through collections and creating batch requests.
 
+## Advanced Features
+
+### OpenCog Integration (Python)
+
+The Python client libraries include an OpenCog integration package that enables AI reasoning and knowledge graph capabilities for M365 Copilot data. This integration allows you to:
+
+- Build knowledge graphs from M365 Copilot retrieval results
+- Apply Artificial General Intelligence (AGI) reasoning to organizational knowledge
+- Extract entities and relationships from documents
+- Query knowledge graphs using pattern matching
+- Infer implicit connections between data
+
+For more information, see the [OpenCog integration documentation](https://github.com/microsoft/Agents-M365Copilot/tree/main/python/packages/microsoft_agents_m365copilot_opencog#readme).
+
 ## Supported Languages
 The Copilot APIs client libraries are currently available for the following languages:
 

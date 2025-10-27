@@ -1,0 +1,59 @@
+[build-system]
+requires = ["poetry-core>=1.0.0", "wheel", "setuptools>=42.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry]
+name = "microsoft-agents-m365copilot-opencog"
+version = "1.0.0-preview.1"
+description = "OpenCog integration for Microsoft Agents M365 Copilot Python SDK"
+authors = ["Microsoft <graphtooling+ccspython@microsoft.com>"]
+maintainers = ["Microsoft <graphtooling+ccspython@microsoft.com>"]
+license = "MIT"
+readme = "README.md"
+keywords = ["Copilot", "Microsoft", "OpenCog", "AGI", "SDK", "M365", "Knowledge Graph"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "License :: OSI Approved :: MIT License",
+    "Intended Audience :: Developers",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Operating System :: OS Independent"
+]
+homepage = "https://github.com/microsoft/Agents-M365Copilot/tree/main/python"
+repository = "https://github.com/microsoft/Agents-M365Copilot"
+documentation = "https://github.com/microsoft/Agents-M365Copilot/tree/main/python/packages/microsoft_agents_m365copilot_opencog#readme"
+
+packages = [
+    {include = "microsoft_agents_m365copilot_opencog"}
+]
+
+include = [
+    "LICENSE",
+    "README.md"
+]
+
+[tool.poetry.dependencies]
+python = ">=3.9,<4.0"
+microsoft-agents-m365copilot-beta = ">=1.0.0-preview.1"
+hyperon = ">=0.1.0"
+
+[tool.poetry.group.dev.dependencies]
+yapf = ">=0.40.2,<0.44.0"
+isort = ">=5.13.2,<7.0.0"
+pylint = "^3.2.7"
+pytest = "^8.3.2"
+pytest-asyncio = ">=0.24,<0.26"
+
+[tool.yapf]
+based_on_style = "pep8"
+dedent_closing_brackets = true
+each_dict_entry_on_separate_line = true
+column_limit = 100
+
+[tool.isort]
+profile = "hug"
